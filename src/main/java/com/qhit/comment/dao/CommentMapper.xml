@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.qhit.comment.dao.ICommentDao"> 
+	<!-- 自定义结果集 --> 
+	<resultMap id="BaseResultMap" type="com.qhit.comment.pojo.Comment"> 
+		<id property="comId" column="com_id" javaType="java.lang.Integer"></id> 
+		<result property="userId" column="user_id" javaType="java.lang.Integer"></result>
+		<result property="receiveId" column="receive_id" javaType="java.lang.Integer"></result>
+		<result property="forId" column="for_id" javaType="java.lang.Integer"></result>
+		<result property="comContent" column="com_content" javaType="java.lang.String"></result>
+		<result property="comTime" column="com_time" javaType="java.lang.String"></result>
+		<result property="fabulouscount" column="fabulousCount" javaType="java.lang.Integer"></result>
+	</resultMap>
+
+	<resultMap id="BaseResultMapping" type="com.qhit.comment.pojo.Comment">
+		<id property="comId" column="com_id" javaType="java.lang.Integer"></id>
+		<result property="userId" column="user_id" javaType="java.lang.Integer"></result>
+		<result property="receiveId" column="receive_id" javaType="java.lang.Integer"></result>
+		<result property="forId" column="for_id" javaType="java.lang.Integer"></result>
+		<result property="comContent" column="com_content" javaType="java.lang.String"></result>
+		<result property="comTime" column="com_time" javaType="java.lang.String"></result>
+		<result property="fabulouscount" column="fabulousCount" javaType="java.lang.Integer"></result>
+		<result property="username" column="username" javaType="java.lang.String"></result>
+		<result property="receivename" column="receivename" javaType="java.lang.String"></result>
+	</resultMap>
+
+	<!-- 在各种标签中，id属性必须与接口中的方法名一样，id的值必须是唯一的，parameterType指查询时使用的参数类型， 
+	resultType属性指明查询返回的结果集类型    --> 
+ 
+	<sql id="Base_Column_List" > 
+		com_id,user_id,for_id,com_content,com_time,fabulousCount 
+	</sql> 
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from comment 
+		where com_id = #{comId} 
+	</select> 
+	<delete id="delete" parameterType="java.lang.Integer" > 
+		delete from comment 
+		where com_id = #{comId} 
+	</delete> 
+	<insert id="insert" parameterType="com.qhit.comment.pojo.Comment" > 
+		insert into comment(user_id,for_id,com_content,com_time,fabulousCount) 
+		values (#{userId},#{forId},#{comContent},#{comTime},#{fabulouscount}) 
+	</insert> 
+	<update id="updateSelective" parameterType="com.qhit.comment.pojo.Comment" > 
+		update comment 
+		<set > 
+			<if test="userId != null and userId!='' " > 
+				user_id = #{userId}, 
+			</if> 
+			<if test="forId != null and forId!='' " > 
+				for_id = #{forId}, 
+			</if> 
+			<if test="comContent != null and comContent!='' " > 
+				com_content = #{comContent}, 
+			</if> 
+			<if test="comTime != null and comTime!='' " > 
+				com_time = #{comTime}, 
+			</if> 
+			<if test="fabulouscount != null and fabulouscount!='' " > 
+				fabulousCount = #{fabulouscount}, 
+			</if> 
+		</set> 
+		where com_id = #{comId} 
+	</update> 
+	<update id="update" parameterType="com.qhit.comment.pojo.Comment" > 
+		update comment 
+		set  user_id = #{userId}, for_id = #{forId}, com_content = #{comContent}, com_time = #{comTime}, fabulousCount = #{fabulouscount} 
+		where com_id = #{comId} 
+	</update> 
+	<select id="findAll" resultMap="BaseResultMap" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from comment 
+	</select> 
+	<select id="findByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from comment 
+		where user_id = #{userId} 
+	</select> 
+	<select id="findByForId" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from comment 
+		where for_id = #{forId} 
+	</select>
+	<select id="findComContent" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+	select
+		<include refid="Base_Column_List" /> 
+		from comment 
+		where com_content = #{comContent} 
+	</select> 
+	<select id="findByComTime" resultMap="BaseResultMap" parameterType="java.lang.String" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from comment 
+		where com_time = #{comTime} 
+	</select> 
+	<select id="findByFabulouscount" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from comment 
+		where fabulousCount = #{fabulouscount} 
+	</select> 
+	<delete id="deleteBatch" parameterType="java.util.Arrays"> 
+		delete from comment where com_id in 
+		<foreach collection="array" item="id" open="(" close=")" separator=","> 
+			#{id} 
+		</foreach> 
+	</delete> 
+	<select id="search" parameterType="com.qhit.comment.pojo.Comment" resultMap="BaseResultMap"> 
+		select * from  comment 
+		<where > 
+			<if test="userId != null and userId!='' " > 
+				 and user_id = #{userId} 
+			</if> 
+			<if test="forId != null and forId!='' " > 
+				 and for_id = #{forId} 
+			</if> 
+			<if test="comContent != null and comContent!='' " > 
+				 and com_content = #{comContent} 
+			</if> 
+			<if test="comTime != null and comTime!='' " > 
+				 and com_time = #{comTime} 
+			</if> 
+			<if test="fabulouscount != null and fabulouscount!='' " > 
+				 and fabulousCount = #{fabulouscount} 
+			</if> 
+		</where> 
+	</select>
+	<select id="displayComments" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT c.com_id,c.user_id,c.receive_id,c.for_id,c.com_content,c.com_time,c.fabulousCount,bu1.name AS username,bu2.name AS receivename
+		FROM COMMENT c
+		LEFT JOIN base_user bu1 ON c.user_id=bu1.user_id
+		LEFT JOIN base_user bu2 ON c.receive_id=bu2.user_id
+		WHERE c.for_id=${forId}
+		ORDER BY c.com_time DESC
+		LIMIT 0,20
+	</select>
+</mapper> 

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.qhit.activity.dao.IActivityDao"> 
+	<!-- 自定义结果集 --> 
+	<resultMap id="BaseResultMap" type="com.qhit.activity.pojo.Activity"> 
+		<id property="actId" column="act_id" javaType="java.lang.Integer"></id> 
+		<result property="actTime" column="act_time" javaType="java.lang.String"></result> 
+		<result property="actThene" column="act_thene" javaType="java.lang.String"></result> 
+		<result property="actContent" column="act_content" javaType="java.lang.String"></result>
+		<result property="state" column="state" javaType="java.lang.Integer"></result>
+	</resultMap> 
+
+	<!-- 在各种标签中，id属性必须与接口中的方法名一样，id的值必须是唯一的，parameterType指查询时使用的参数类型， 
+	resultType属性指明查询返回的结果集类型    --> 
+ 
+	<sql id="Base_Column_List" > 
+		act_id,act_time,act_thene,act_content,state 
+	</sql> 
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from activity 
+		where act_id = #{actId} 
+	</select> 
+	<delete id="delete" parameterType="java.lang.Integer" > 
+		delete from activity 
+		where act_id = #{actId} 
+	</delete> 
+	<insert id="insert" parameterType="com.qhit.activity.pojo.Activity" > 
+		insert into activity(act_time,act_thene,act_content,state) 
+		values (#{actTime},#{actThene},#{actContent},#{state}) 
+	</insert> 
+	<update id="updateSelective" parameterType="com.qhit.activity.pojo.Activity" > 
+		update activity 
+		<set > 
+			<if test="actTime != null and actTime!='' " > 
+				act_time = #{actTime}, 
+			</if> 
+			<if test="actThene != null and actThene!='' " > 
+				act_thene = #{actThene}, 
+			</if> 
+			<if test="actContent != null and actContent!='' " > 
+				act_content = #{actContent}, 
+			</if> 
+			<if test="state != null and state!='' " > 
+				state = #{state}, 
+			</if> 
+		</set> 
+		where act_id = #{actId} 
+	</update> 
+	<update id="update" parameterType="com.qhit.activity.pojo.Activity" > 
+		update activity 
+		set  act_time = #{actTime}, act_thene = #{actThene}, act_content = #{actContent}, state = #{state} 
+		where act_id = #{actId} 
+	</update> 
+	<select id="findAll" resultMap="BaseResultMap" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from activity 
+	</select> 
+	<select id="findByActTime" resultMap="BaseResultMap" parameterType="java.lang.String" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from activity 
+		where act_time = #{actTime} 
+	</select> 
+	<select id="findByActThene" resultMap="BaseResultMap" parameterType="java.lang.String" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from activity 
+		where act_thene = #{actThene} 
+	</select>
+	<select id="findByActContent" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select
+		<include refid="Base_Column_List" /> 
+		from activity 
+		where act_content = #{actContent} 
+	</select> 
+	<select id="findByState" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from activity 
+		where state = #{state} 
+	</select> 
+	<delete id="deleteBatch" parameterType="java.util.Arrays"> 
+		delete from activity where act_id in 
+		<foreach collection="array" item="id" open="(" close=")" separator=","> 
+			#{id} 
+		</foreach> 
+	</delete> 
+	<select id="search" parameterType="com.qhit.activity.pojo.Activity" resultMap="BaseResultMap"> 
+		select * from  activity 
+		<where > 
+			<if test="actTime != null and actTime!='' " > 
+				 and act_time = #{actTime} 
+			</if> 
+			<if test="actThene != null and actThene!='' " > 
+				 and act_thene = #{actThene} 
+			</if> 
+			<if test="actContent != null and actContent!='' " > 
+				 and act_content = #{actContent} 
+			</if> 
+			<if test="state != null and state!='' " > 
+				 and state = #{state} 
+			</if> 
+		</where> 
+	</select> 
+</mapper> 

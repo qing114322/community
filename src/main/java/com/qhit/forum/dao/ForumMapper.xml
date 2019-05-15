@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.qhit.forum.dao.IForumDao"> 
+	<!-- 自定义结果集 --> 
+	<resultMap id="BaseResultMap" type="com.qhit.forum.pojo.Forum">
+		<id property="forId" column="for_id" javaType="java.lang.Integer"></id>
+		<result property="forTime" column="for_time" javaType="java.lang.String"></result>
+		<result property="userId" column="user_id" javaType="java.lang.Integer"></result>
+		<result property="forTheme" column="for_theme" javaType="java.lang.String"></result>
+		<result property="forContent" column="for_content" javaType="java.lang.String"></result>
+		<result property="newsImage" column="news_image" javaType="java.lang.String"></result>
+		<result property="exaState" column="exa_state" javaType="java.lang.Integer"></result>
+		<result property="fabulouscount" column="fabulousCount" javaType="java.lang.Integer"></result>
+		<result property="state" column="state" javaType="java.lang.Integer"></result>
+		<result property="elite" column="elite" javaType="java.lang.Integer"></result>
+	</resultMap>
+
+	<resultMap id="BaseResultMapping" type="com.qhit.forum.pojo.Forum">
+		<id property="forId" column="for_id" javaType="java.lang.Integer"></id>
+		<result property="forTime" column="for_time" javaType="java.lang.String"></result>
+		<result property="userId" column="user_id" javaType="java.lang.Integer"></result>
+		<result property="forTheme" column="for_theme" javaType="java.lang.String"></result>
+		<result property="forContent" column="for_content" javaType="java.lang.String"></result>
+		<result property="newsImage" column="news_image" javaType="java.lang.String"></result>
+		<result property="exaState" column="exa_state" javaType="java.lang.Integer"></result>
+		<result property="fabulouscount" column="fabulousCount" javaType="java.lang.Integer"></result>
+		<result property="state" column="state" javaType="java.lang.Integer"></result>
+		<result property="elite" column="elite" javaType="java.lang.Integer"></result>
+		<result property="name" column="name" javaType="java.lang.String"></result>
+		<result property="userSex" column="user_sex" javaType="java.lang.Integer"></result>
+		<result property="portrait" column="portrait" javaType="java.lang.String"></result>
+		<result property="comcount" column="comcount" javaType="java.lang.Integer"></result>
+	</resultMap>
+
+	<!-- 在各种标签中，id属性必须与接口中的方法名一样，id的值必须是唯一的，parameterType指查询时使用的参数类型， 
+	resultType属性指明查询返回的结果集类型    --> 
+ 
+	<sql id="Base_Column_List" > 
+		for_id,for_time,user_id,for_theme,for_content,news_image,exa_state,fabulousCount,state,elite 
+	</sql> 
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from forum 
+		where for_id = #{forId} 
+	</select> 
+	<delete id="delete" parameterType="java.lang.Integer" > 
+		delete from forum 
+		where for_id = #{forId} 
+	</delete> 
+	<insert id="insert" parameterType="com.qhit.forum.pojo.Forum" > 
+		insert into forum(for_time,user_id,for_theme,for_content,news_image,exa_state,fabulousCount,state,elite) 
+		values (#{forTime},#{userId},#{forTheme},#{forContent},#{newsImage},#{exaState},#{fabulouscount},#{state},#{elite}) 
+	</insert> 
+	<update id="updateSelective" parameterType="com.qhit.forum.pojo.Forum" > 
+		update forum 
+		<set > 
+			<if test="forTime != null and forTime!='' " > 
+				for_time = #{forTime}, 
+			</if> 
+			<if test="userId != null and userId!='' " > 
+				user_id = #{userId}, 
+			</if> 
+			<if test="forTheme != null and forTheme!='' " > 
+				for_theme = #{forTheme}, 
+			</if> 
+			<if test="forContent != null and forContent!='' " > 
+				for_content = #{forContent}, 
+			</if> 
+			<if test="newsImage != null and newsImage!='' " > 
+				news_image = #{newsImage}, 
+			</if> 
+			<if test="exaState != null and exaState!='' " > 
+				exa_state = #{exaState}, 
+			</if> 
+			<if test="fabulouscount != null and fabulouscount!='' " > 
+				fabulousCount = #{fabulouscount}, 
+			</if> 
+			<if test="state != null and state!='' " > 
+				state = #{state}, 
+			</if> 
+			<if test="elite != null and elite!='' " > 
+				elite = #{elite}, 
+			</if> 
+		</set> 
+		where for_id = #{forId} 
+	</update> 
+	<update id="update" parameterType="com.qhit.forum.pojo.Forum" > 
+		update forum 
+		set  for_time = #{forTime}, user_id = #{userId}, for_theme = #{forTheme}, for_content = #{forContent}, news_image = #{newsImage}, exa_state = #{exaState}, fabulousCount = #{fabulouscount}, state = #{state}, elite = #{elite} 
+		where for_id = #{forId} 
+	</update> 
+	<select id="findAll" resultMap="BaseResultMap" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from forum 
+	</select> 
+	<select id="findByForTime" resultMap="BaseResultMap" parameterType="java.lang.String" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from forum 
+		where for_time = #{forTime} 
+	</select> 
+	<select id="findByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from forum 
+		where user_id = #{userId} 
+	</select> 
+	<select id="findByForTheme" resultMap="BaseResultMap" parameterType="java.lang.String" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from forum 
+		where for_theme = #{forTheme} 
+	</select>
+	<select id="findByForContent" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select
+		<include refid="Base_Column_List" /> 
+		from forum 
+		where for_content = #{forContent} 
+	</select> 
+	<select id="findByNewsImage" resultMap="BaseResultMap" parameterType="java.lang.String" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from forum 
+		where news_image = #{newsImage} 
+	</select> 
+	<select id="findByExaState" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from forum 
+		where exa_state = #{exaState} 
+	</select> 
+	<select id="findByFabulouscount" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from forum 
+		where fabulousCount = #{fabulouscount} 
+	</select> 
+	<select id="findByState" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from forum 
+		where state = #{state} 
+	</select> 
+	<select id="findByElite" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from forum 
+		where elite = #{elite} 
+	</select> 
+	<delete id="deleteBatch" parameterType="java.util.Arrays"> 
+		delete from forum where for_id in 
+		<foreach collection="array" item="id" open="(" close=")" separator=","> 
+			#{id} 
+		</foreach> 
+	</delete> 
+	<select id="search" parameterType="com.qhit.forum.pojo.Forum" resultMap="BaseResultMap"> 
+		select * from  forum 
+		<where > 
+			<if test="forTime != null and forTime!='' " > 
+				 and for_time = #{forTime} 
+			</if> 
+			<if test="userId != null and userId!='' " > 
+				 and user_id = #{userId} 
+			</if> 
+			<if test="forTheme != null and forTheme!='' " > 
+				 and for_theme = #{forTheme} 
+			</if> 
+			<if test="forContent != null and forContent!='' " > 
+				 and for_content = #{forContent} 
+			</if> 
+			<if test="newsImage != null and newsImage!='' " > 
+				 and news_image = #{newsImage} 
+			</if> 
+			<if test="exaState != null and exaState!='' " > 
+				 and exa_state = #{exaState} 
+			</if> 
+			<if test="fabulouscount != null and fabulouscount!='' " > 
+				 and fabulousCount = #{fabulouscount} 
+			</if> 
+			<if test="state != null and state!='' " > 
+				 and state = #{state} 
+			</if> 
+			<if test="elite != null and elite!='' " > 
+				 and elite = #{elite} 
+			</if> 
+		</where> 
+	</select>
+	<select id="overview" parameterType="java.util.Map" resultMap="BaseResultMapping">
+		SELECT f.for_id,f.`for_time`,f.`user_id`,f.`for_theme`,f.`for_content`,f.`news_image`,f.`exa_state`,f.`fabulousCount`,f.`state`,f.`elite`,bu.`name`,bu.portrait,bu.`user_sex`,IFNULL(c.comcount,0) AS comcount
+		FROM forum f
+		LEFT JOIN base_user bu ON f.`user_id`=bu.`user_id`
+		LEFT JOIN (SELECT c.for_id,COUNT(c.for_id) AS comcount
+		FROM COMMENT c
+		GROUP BY c.for_id) c ON c.`for_id`=f.`for_id`
+		WHERE f.`exa_state`=1
+		ORDER BY f.`for_time` DESC
+		LIMIT 0,20
+	</select>
+	<select id="findDetails" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT f.for_id,f.`for_time`,f.`user_id`,f.`for_theme`,f.`for_content`,f.`news_image`,f.`exa_state`,f.`fabulousCount`,f.`state`,f.`elite`,bu.`name`,bu.portrait,bu.`user_sex`,IFNULL(c.comcount,0) AS comcount
+		FROM forum f
+		LEFT JOIN base_user bu ON f.`user_id`=bu.`user_id`
+		LEFT JOIN (SELECT c.for_id,COUNT(c.for_id) AS comcount
+		FROM COMMENT c
+		GROUP BY c.for_id) c ON c.`for_id`=f.`for_id`
+		WHERE f.`exa_state`=1 AND f.`for_id`=${forId}
+	</select>
+	<select id="popular" parameterType="java.util.Map" resultMap="BaseResultMapping">
+		SELECT * FROM
+		(SELECT f.for_id,f.`for_time`,f.`user_id`,f.`for_theme`,f.`for_content`,f.`news_image`,f.`exa_state`,f.`fabulousCount`,f.`state`,f.`elite`,bu.`name`,bu.portrait,bu.`user_sex`,IFNULL(c.comcount,0) AS comcount
+		FROM forum f
+		LEFT JOIN base_user bu ON f.`user_id`=bu.`user_id`
+		LEFT JOIN (SELECT c.for_id,COUNT(c.for_id) AS comcount
+		FROM COMMENT c
+		GROUP BY c.for_id) c ON c.`for_id`=f.`for_id`
+		WHERE f.`exa_state`=1) a
+		WHERE (a.comcount+fabulousCount)>10
+		ORDER BY a.`for_time` DESC
+		LIMIT 0,20
+	</select>
+	<select id="refinement" parameterType="java.util.Map" resultMap="BaseResultMapping">
+		SELECT f.for_id,f.`for_time`,f.`user_id`,f.`for_theme`,f.`for_content`,f.`news_image`,f.`exa_state`,f.`fabulousCount`,f.`state`,f.`elite`,bu.`name`,bu.portrait,bu.`user_sex`,IFNULL(c.comcount,0) AS comcount
+		FROM forum f
+		LEFT JOIN base_user bu ON f.`user_id`=bu.`user_id`
+		LEFT JOIN (SELECT c.for_id,COUNT(c.for_id) AS comcount
+		FROM COMMENT c
+		GROUP BY c.for_id) c ON c.`for_id`=f.`for_id`
+		WHERE f.`exa_state`=1 AND f.elite=1
+		ORDER BY f.`for_time` DESC
+		LIMIT 0,20
+	</select>
+	<select id="top" parameterType="java.util.Map" resultMap="BaseResultMapping">
+		SELECT f.for_id,f.`for_time`,f.`user_id`,f.`for_theme`,f.`for_content`,f.`news_image`,f.`exa_state`,f.`fabulousCount`,f.`state`,f.`elite`,bu.`name`,bu.portrait,bu.`user_sex`,IFNULL(c.comcount,0) AS comcount
+		FROM forum f
+		LEFT JOIN base_user bu ON f.`user_id`=bu.`user_id`
+		LEFT JOIN (SELECT c.for_id,COUNT(c.for_id) AS comcount
+		FROM COMMENT c
+		GROUP BY c.for_id) c ON c.`for_id`=f.`for_id`
+		WHERE f.`exa_state`=1 AND f.state!=0
+		ORDER BY f.`state`
+	</select>
+</mapper> 
