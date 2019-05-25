@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.qhit.lostGoods.dao.ILostGoodsDao"> 
+	<!-- 自定义结果集 --> 
+	<resultMap id="BaseResultMap" type="com.qhit.lostGoods.pojo.LostGoods"> 
+		<id property="lgId" column="lg_id" javaType="java.lang.Integer"></id> 
+		<result property="lgTime" column="lg_time" javaType="java.lang.String"></result> 
+		<result property="userId" column="user_id" javaType="java.lang.Integer"></result> 
+		<result property="lgTheme" column="lg_theme" javaType="java.lang.String"></result> 
+		<result property="giId" column="gi_id" javaType="java.lang.Integer"></result> 
+		<result property="exaState" column="exa_state" javaType="java.lang.Integer"></result> 
+		<result property="fabulouscount" column="fabulousCount" javaType="java.lang.Integer"></result> 
+		<result property="completed" column="completed" javaType="java.lang.Integer"></result> 
+	</resultMap> 
+
+	<!-- 在各种标签中，id属性必须与接口中的方法名一样，id的值必须是唯一的，parameterType指查询时使用的参数类型， 
+	resultType属性指明查询返回的结果集类型    --> 
+ 
+	<sql id="Base_Column_List" > 
+		lg_id,lg_time,user_id,lg_theme,lg_content,gi_id,exa_state,fabulousCount,completed 
+	</sql> 
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from lost_goods 
+		where lg_id = #{lgId} 
+	</select> 
+	<delete id="delete" parameterType="java.lang.Integer" > 
+		delete from lost_goods 
+		where lg_id = #{lgId} 
+	</delete> 
+	<insert id="insert" parameterType="com.qhit.lostGoods.pojo.LostGoods" > 
+		insert into lost_goods(lg_time,user_id,lg_theme,lg_content,gi_id,exa_state,fabulousCount,completed) 
+		values (#{lgTime},#{userId},#{lgTheme},#{lgContent},#{giId},#{exaState},#{fabulouscount},#{completed}) 
+	</insert> 
+	<update id="updateSelective" parameterType="com.qhit.lostGoods.pojo.LostGoods" > 
+		update lost_goods 
+		<set > 
+			<if test="lgTime != null and lgTime!='' " > 
+				lg_time = #{lgTime}, 
+			</if> 
+			<if test="userId != null and userId!='' " > 
+				user_id = #{userId}, 
+			</if> 
+			<if test="lgTheme != null and lgTheme!='' " > 
+				lg_theme = #{lgTheme}, 
+			</if> 
+			<if test="lgContent != null and lgContent!='' " > 
+				lg_content = #{lgContent}, 
+			</if> 
+			<if test="giId != null and giId!='' " > 
+				gi_id = #{giId}, 
+			</if> 
+			<if test="exaState != null and exaState!='' " > 
+				exa_state = #{exaState}, 
+			</if> 
+			<if test="fabulouscount != null and fabulouscount!='' " > 
+				fabulousCount = #{fabulouscount}, 
+			</if> 
+			<if test="completed != null and completed!='' " > 
+				completed = #{completed}, 
+			</if> 
+		</set> 
+		where lg_id = #{lgId} 
+	</update> 
+	<update id="update" parameterType="com.qhit.lostGoods.pojo.LostGoods" > 
+		update lost_goods 
+		set  lg_time = #{lgTime}, user_id = #{userId}, lg_theme = #{lgTheme}, lg_content = #{lgContent}, gi_id = #{giId}, exa_state = #{exaState}, fabulousCount = #{fabulouscount}, completed = #{completed} 
+		where lg_id = #{lgId} 
+	</update> 
+	<select id="findAll" resultMap="BaseResultMap" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from lost_goods 
+	</select> 
+	<select id="findByLgTime" resultMap="BaseResultMap" parameterType="java.lang.String" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from lost_goods 
+		where lg_time = #{lgTime} 
+	</select> 
+	<select id="findByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from lost_goods 
+		where user_id = #{userId} 
+	</select> 
+	<select id="findByLgTheme" resultMap="BaseResultMap" parameterType="java.lang.String" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from lost_goods 
+		where lg_theme = #{lgTheme} 
+	</select>
+	<select id="findByLgContent" resultMap="BaseResultMap" parameterType="java.lang.String" >
+	select
+		<include refid="Base_Column_List" /> 
+		from lost_goods 
+		where lg_content = #{lgContent} 
+	</select> 
+	<select id="findByGiId" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from lost_goods 
+		where gi_id = #{giId} 
+	</select> 
+	<select id="findByExaState" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from lost_goods 
+		where exa_state = #{exaState} 
+	</select> 
+	<select id="findByFabulouscount" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from lost_goods 
+		where fabulousCount = #{fabulouscount} 
+	</select> 
+	<select id="findByCompleted" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from lost_goods 
+		where completed = #{completed} 
+	</select> 
+	<delete id="deleteBatch" parameterType="java.util.Arrays"> 
+		delete from lost_goods where lg_id in 
+		<foreach collection="array" item="id" open="(" close=")" separator=","> 
+			#{id} 
+		</foreach> 
+	</delete> 
+	<select id="search" parameterType="com.qhit.lostGoods.pojo.LostGoods" resultMap="BaseResultMap"> 
+		select * from  lost_goods 
+		<where > 
+			<if test="lgTime != null and lgTime!='' " > 
+				 and lg_time = #{lgTime} 
+			</if> 
+			<if test="userId != null and userId!='' " > 
+				 and user_id = #{userId} 
+			</if> 
+			<if test="lgTheme != null and lgTheme!='' " > 
+				 and lg_theme = #{lgTheme} 
+			</if> 
+			<if test="lgContent != null and lgContent!='' " > 
+				 and lg_content = #{lgContent} 
+			</if> 
+			<if test="giId != null and giId!='' " > 
+				 and gi_id = #{giId} 
+			</if> 
+			<if test="exaState != null and exaState!='' " > 
+				 and exa_state = #{exaState} 
+			</if> 
+			<if test="fabulouscount != null and fabulouscount!='' " > 
+				 and fabulousCount = #{fabulouscount} 
+			</if> 
+			<if test="completed != null and completed!='' " > 
+				 and completed = #{completed} 
+			</if> 
+		</where> 
+	</select> 
+</mapper> 

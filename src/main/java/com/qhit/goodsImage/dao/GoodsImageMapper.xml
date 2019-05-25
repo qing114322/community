@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.qhit.goodsImage.dao.IGoodsImageDao"> 
+	<!-- 自定义结果集 --> 
+	<resultMap id="BaseResultMap" type="com.qhit.goodsImage.pojo.GoodsImage"> 
+		<id property="giId" column="gi_id" javaType="java.lang.Integer"></id> 
+		<result property="lgId" column="lg_id" javaType="java.lang.Integer"></result> 
+		<result property="imageName" column="image_name" javaType="java.lang.String"></result> 
+	</resultMap> 
+
+	<!-- 在各种标签中，id属性必须与接口中的方法名一样，id的值必须是唯一的，parameterType指查询时使用的参数类型， 
+	resultType属性指明查询返回的结果集类型    --> 
+ 
+	<sql id="Base_Column_List" > 
+		gi_id,lg_id,image_name 
+	</sql> 
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from goods_image 
+		where gi_id = #{giId} 
+	</select> 
+	<delete id="delete" parameterType="java.lang.Integer" > 
+		delete from goods_image 
+		where gi_id = #{giId} 
+	</delete> 
+	<insert id="insert" parameterType="com.qhit.goodsImage.pojo.GoodsImage" > 
+		insert into goods_image(lg_id,image_name) 
+		values (#{lgId},#{imageName}) 
+	</insert> 
+	<update id="updateSelective" parameterType="com.qhit.goodsImage.pojo.GoodsImage" > 
+		update goods_image 
+		<set > 
+			<if test="lgId != null and lgId!='' " > 
+				lg_id = #{lgId}, 
+			</if> 
+			<if test="imageName != null and imageName!='' " > 
+				image_name = #{imageName}, 
+			</if> 
+		</set> 
+		where gi_id = #{giId} 
+	</update> 
+	<update id="update" parameterType="com.qhit.goodsImage.pojo.GoodsImage" > 
+		update goods_image 
+		set  lg_id = #{lgId}, image_name = #{imageName} 
+		where gi_id = #{giId} 
+	</update> 
+	<select id="findAll" resultMap="BaseResultMap" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from goods_image 
+	</select> 
+	<select id="findByLgId" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from goods_image 
+		where lg_id = #{lgId} 
+	</select> 
+	<select id="findByImageName" resultMap="BaseResultMap" parameterType="java.lang.String" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from goods_image 
+		where image_name = #{imageName} 
+	</select> 
+	<delete id="deleteBatch" parameterType="java.util.Arrays"> 
+		delete from goods_image where gi_id in 
+		<foreach collection="array" item="id" open="(" close=")" separator=","> 
+			#{id} 
+		</foreach> 
+	</delete> 
+	<select id="search" parameterType="com.qhit.goodsImage.pojo.GoodsImage" resultMap="BaseResultMap"> 
+		select * from  goods_image 
+		<where > 
+			<if test="lgId != null and lgId!='' " > 
+				 and lg_id = #{lgId} 
+			</if> 
+			<if test="imageName != null and imageName!='' " > 
+				 and image_name = #{imageName} 
+			</if> 
+		</where> 
+	</select> 
+</mapper> 

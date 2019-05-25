@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.qhit.secendComment.dao.ISecendCommentDao"> 
+	<!-- 自定义结果集 --> 
+	<resultMap id="BaseResultMap" type="com.qhit.secendComment.pojo.SecendComment"> 
+		<id property="scId" column="sc_id" javaType="java.lang.Integer"></id> 
+		<result property="comId" column="com_id" javaType="java.lang.Integer"></result> 
+		<result property="forId" column="for_id" javaType="java.lang.Integer"></result> 
+		<result property="scTime" column="sc_time" javaType="java.lang.String"></result> 
+		<result property="fabulouscount" column="fabulousCount" javaType="java.lang.Integer"></result> 
+	</resultMap> 
+
+	<!-- 在各种标签中，id属性必须与接口中的方法名一样，id的值必须是唯一的，parameterType指查询时使用的参数类型， 
+	resultType属性指明查询返回的结果集类型    --> 
+ 
+	<sql id="Base_Column_List" > 
+		sc_id,com_id,for_id,sc_content,sc_time,fabulousCount 
+	</sql> 
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from secend_comment 
+		where sc_id = #{scId} 
+	</select> 
+	<delete id="delete" parameterType="java.lang.Integer" > 
+		delete from secend_comment 
+		where sc_id = #{scId} 
+	</delete> 
+	<insert id="insert" parameterType="com.qhit.secendComment.pojo.SecendComment" > 
+		insert into secend_comment(com_id,for_id,sc_content,sc_time,fabulousCount) 
+		values (#{comId},#{forId},#{scContent},#{scTime},#{fabulouscount}) 
+	</insert> 
+	<update id="updateSelective" parameterType="com.qhit.secendComment.pojo.SecendComment" > 
+		update secend_comment 
+		<set > 
+			<if test="comId != null and comId!='' " > 
+				com_id = #{comId}, 
+			</if> 
+			<if test="forId != null and forId!='' " > 
+				for_id = #{forId}, 
+			</if> 
+			<if test="scContent != null and scContent!='' " > 
+				sc_content = #{scContent}, 
+			</if> 
+			<if test="scTime != null and scTime!='' " > 
+				sc_time = #{scTime}, 
+			</if> 
+			<if test="fabulouscount != null and fabulouscount!='' " > 
+				fabulousCount = #{fabulouscount}, 
+			</if> 
+		</set> 
+		where sc_id = #{scId} 
+	</update> 
+	<update id="update" parameterType="com.qhit.secendComment.pojo.SecendComment" > 
+		update secend_comment 
+		set  com_id = #{comId}, for_id = #{forId}, sc_content = #{scContent}, sc_time = #{scTime}, fabulousCount = #{fabulouscount} 
+		where sc_id = #{scId} 
+	</update> 
+	<select id="findAll" resultMap="BaseResultMap" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from secend_comment 
+	</select> 
+	<select id="findByComId" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from secend_comment 
+		where com_id = #{comId} 
+	</select> 
+	<select id="findByForId" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from secend_comment 
+		where for_id = #{forId} 
+	</select>
+	<select id="findByScContent" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+		select
+		<include refid="Base_Column_List" /> 
+		from secend_comment 
+		where sc_content = #{scContent} 
+	</select> 
+	<select id="findByScTime" resultMap="BaseResultMap" parameterType="java.lang.String" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from secend_comment 
+		where sc_time = #{scTime} 
+	</select> 
+	<select id="findByFabulouscount" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from secend_comment 
+		where fabulousCount = #{fabulouscount} 
+	</select> 
+	<delete id="deleteBatch" parameterType="java.util.Arrays"> 
+		delete from secend_comment where sc_id in 
+		<foreach collection="array" item="id" open="(" close=")" separator=","> 
+			#{id} 
+		</foreach> 
+	</delete> 
+	<select id="search" parameterType="com.qhit.secendComment.pojo.SecendComment" resultMap="BaseResultMap"> 
+		select * from  secend_comment 
+		<where > 
+			<if test="comId != null and comId!='' " > 
+				 and com_id = #{comId} 
+			</if> 
+			<if test="forId != null and forId!='' " > 
+				 and for_id = #{forId} 
+			</if> 
+			<if test="scContent != null and scContent!='' " > 
+				 and sc_content = #{scContent} 
+			</if> 
+			<if test="scTime != null and scTime!='' " > 
+				 and sc_time = #{scTime} 
+			</if> 
+			<if test="fabulouscount != null and fabulouscount!='' " > 
+				 and fabulousCount = #{fabulouscount} 
+			</if> 
+		</where> 
+	</select> 
+</mapper> 
