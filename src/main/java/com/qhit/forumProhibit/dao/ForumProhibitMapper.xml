@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.qhit.forumProhibit.dao.IForumProhibitDao"> 
+	<!-- 自定义结果集 --> 
+	<resultMap id="BaseResultMap" type="com.qhit.forumProhibit.pojo.ForumProhibit"> 
+		<id property="fpId" column="fp_id" javaType="java.lang.Integer"></id> 
+		<result property="userId" column="user_id" javaType="java.lang.Integer"></result> 
+		<result property="publish" column="publish" javaType="java.lang.Integer"></result> 
+		<result property="comment" column="comment" javaType="java.lang.Integer"></result> 
+	</resultMap> 
+
+	<!-- 在各种标签中，id属性必须与接口中的方法名一样，id的值必须是唯一的，parameterType指查询时使用的参数类型， 
+	resultType属性指明查询返回的结果集类型    --> 
+ 
+	<sql id="Base_Column_List" > 
+		fp_id,user_id,publish,comment 
+	</sql> 
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from forum_prohibit 
+		where fp_id = #{fpId} 
+	</select> 
+	<delete id="delete" parameterType="java.lang.Integer" > 
+		delete from forum_prohibit 
+		where fp_id = #{fpId} 
+	</delete> 
+	<insert id="insert" parameterType="com.qhit.forumProhibit.pojo.ForumProhibit" > 
+		insert into forum_prohibit(user_id,publish,comment) 
+		values (#{userId},#{publish},#{comment}) 
+	</insert> 
+	<update id="updateSelective" parameterType="com.qhit.forumProhibit.pojo.ForumProhibit" > 
+		update forum_prohibit 
+		<set > 
+			<if test="userId != null and userId!='' " > 
+				user_id = #{userId}, 
+			</if> 
+			<if test="publish != null and publish!='' " > 
+				publish = #{publish}, 
+			</if> 
+			<if test="comment != null and comment!='' " > 
+				comment = #{comment}, 
+			</if> 
+		</set> 
+		where fp_id = #{fpId} 
+	</update> 
+	<update id="update" parameterType="com.qhit.forumProhibit.pojo.ForumProhibit" > 
+		update forum_prohibit 
+		set  user_id = #{userId}, publish = #{publish}, comment = #{comment} 
+		where fp_id = #{fpId} 
+	</update> 
+	<select id="findAll" resultMap="BaseResultMap" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from forum_prohibit 
+	</select> 
+	<select id="findByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from forum_prohibit 
+		where user_id = #{userId} 
+	</select> 
+	<select id="findByPublish" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from forum_prohibit 
+		where publish = #{publish} 
+	</select> 
+	<select id="findByComment" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from forum_prohibit 
+		where comment = #{comment} 
+	</select> 
+	<delete id="deleteBatch" parameterType="java.util.Arrays"> 
+		delete from forum_prohibit where fp_id in 
+		<foreach collection="array" item="id" open="(" close=")" separator=","> 
+			#{id} 
+		</foreach> 
+	</delete> 
+	<select id="search" parameterType="com.qhit.forumProhibit.pojo.ForumProhibit" resultMap="BaseResultMap"> 
+		select * from  forum_prohibit 
+		<where > 
+			<if test="userId != null and userId!='' " > 
+				 and user_id = #{userId} 
+			</if> 
+			<if test="publish != null and publish!='' " > 
+				 and publish = #{publish} 
+			</if> 
+			<if test="comment != null and comment!='' " > 
+				 and comment = #{comment} 
+			</if> 
+		</where> 
+	</select> 
+</mapper> 

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.qhit.forumFabulous.dao.IForumFabulousDao"> 
+	<!-- 自定义结果集 --> 
+	<resultMap id="BaseResultMap" type="com.qhit.forumFabulous.pojo.ForumFabulous"> 
+		<id property="ffId" column="ff_id" javaType="java.lang.Integer"></id> 
+		<result property="userId" column="user_id" javaType="java.lang.Integer"></result> 
+		<result property="forId" column="for_id" javaType="java.lang.Integer"></result> 
+	</resultMap> 
+
+	<!-- 在各种标签中，id属性必须与接口中的方法名一样，id的值必须是唯一的，parameterType指查询时使用的参数类型， 
+	resultType属性指明查询返回的结果集类型    --> 
+ 
+	<sql id="Base_Column_List" > 
+		ff_id,user_id,for_id 
+	</sql> 
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from forum_fabulous 
+		where ff_id = #{ffId} 
+	</select> 
+	<delete id="delete" parameterType="java.lang.Integer" > 
+		delete from forum_fabulous 
+		where ff_id = #{ffId} 
+	</delete> 
+	<insert id="insert" parameterType="com.qhit.forumFabulous.pojo.ForumFabulous" > 
+		insert into forum_fabulous(user_id,for_id) 
+		values (#{userId},#{forId}) 
+	</insert> 
+	<update id="updateSelective" parameterType="com.qhit.forumFabulous.pojo.ForumFabulous" > 
+		update forum_fabulous 
+		<set > 
+			<if test="userId != null and userId!='' " > 
+				user_id = #{userId}, 
+			</if> 
+			<if test="forId != null and forId!='' " > 
+				for_id = #{forId}, 
+			</if> 
+		</set> 
+		where ff_id = #{ffId} 
+	</update> 
+	<update id="update" parameterType="com.qhit.forumFabulous.pojo.ForumFabulous" > 
+		update forum_fabulous 
+		set  user_id = #{userId}, for_id = #{forId} 
+		where ff_id = #{ffId} 
+	</update> 
+	<select id="findAll" resultMap="BaseResultMap" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from forum_fabulous 
+	</select> 
+	<select id="findByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from forum_fabulous 
+		where user_id = #{userId} 
+	</select> 
+	<select id="findByForId" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from forum_fabulous 
+		where for_id = #{forId} 
+	</select> 
+	<delete id="deleteBatch" parameterType="java.util.Arrays"> 
+		delete from forum_fabulous where ff_id in 
+		<foreach collection="array" item="id" open="(" close=")" separator=","> 
+			#{id} 
+		</foreach> 
+	</delete> 
+	<select id="search" parameterType="com.qhit.forumFabulous.pojo.ForumFabulous" resultMap="BaseResultMap"> 
+		select * from  forum_fabulous 
+		<where > 
+			<if test="userId != null and userId!='' " > 
+				 and user_id = #{userId} 
+			</if> 
+			<if test="forId != null and forId!='' " > 
+				 and for_id = #{forId} 
+			</if> 
+		</where> 
+	</select> 
+</mapper> 

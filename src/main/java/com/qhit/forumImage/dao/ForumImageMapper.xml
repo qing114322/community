@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.qhit.forumImage.dao.IForumImageDao"> 
+	<!-- 自定义结果集 --> 
+	<resultMap id="BaseResultMap" type="com.qhit.forumImage.pojo.ForumImage"> 
+		<id property="fiId" column="fi_id" javaType="java.lang.Integer"></id> 
+		<result property="forId" column="for_id" javaType="java.lang.Integer"></result> 
+		<result property="imageName" column="image_name" javaType="java.lang.String"></result> 
+	</resultMap> 
+
+	<!-- 在各种标签中，id属性必须与接口中的方法名一样，id的值必须是唯一的，parameterType指查询时使用的参数类型， 
+	resultType属性指明查询返回的结果集类型    --> 
+ 
+	<sql id="Base_Column_List" > 
+		fi_id,for_id,image_name 
+	</sql> 
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from forum_image 
+		where fi_id = #{fiId} 
+	</select> 
+	<delete id="delete" parameterType="java.lang.Integer" > 
+		delete from forum_image 
+		where fi_id = #{fiId} 
+	</delete> 
+	<insert id="insert" parameterType="com.qhit.forumImage.pojo.ForumImage" > 
+		insert into forum_image(for_id,image_name) 
+		values (#{forId},#{imageName}) 
+	</insert> 
+	<update id="updateSelective" parameterType="com.qhit.forumImage.pojo.ForumImage" > 
+		update forum_image 
+		<set > 
+			<if test="forId != null and forId!='' " > 
+				for_id = #{forId}, 
+			</if> 
+			<if test="imageName != null and imageName!='' " > 
+				image_name = #{imageName}, 
+			</if> 
+		</set> 
+		where fi_id = #{fiId} 
+	</update> 
+	<update id="update" parameterType="com.qhit.forumImage.pojo.ForumImage" > 
+		update forum_image 
+		set  for_id = #{forId}, image_name = #{imageName} 
+		where fi_id = #{fiId} 
+	</update> 
+	<select id="findAll" resultMap="BaseResultMap" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from forum_image 
+	</select> 
+	<select id="findByForId" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from forum_image 
+		where for_id = #{forId} 
+	</select> 
+	<select id="findByImageName" resultMap="BaseResultMap" parameterType="java.lang.String" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from forum_image 
+		where image_name = #{imageName} 
+	</select> 
+	<delete id="deleteBatch" parameterType="java.util.Arrays"> 
+		delete from forum_image where fi_id in 
+		<foreach collection="array" item="id" open="(" close=")" separator=","> 
+			#{id} 
+		</foreach> 
+	</delete> 
+	<select id="search" parameterType="com.qhit.forumImage.pojo.ForumImage" resultMap="BaseResultMap"> 
+		select * from  forum_image 
+		<where > 
+			<if test="forId != null and forId!='' " > 
+				 and for_id = #{forId} 
+			</if> 
+			<if test="imageName != null and imageName!='' " > 
+				 and image_name = #{imageName} 
+			</if> 
+		</where> 
+	</select> 
+</mapper> 
