@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.qhit.commentReport.dao.ICommentReportDao"> 
+	<!-- 自定义结果集 --> 
+	<resultMap id="BaseResultMap" type="com.qhit.commentReport.pojo.CommentReport"> 
+		<id property="crId" column="cr_id" javaType="java.lang.Integer"></id> 
+		<result property="userId" column="user_id" javaType="java.lang.Integer"></result> 
+		<result property="comId" column="com_id" javaType="java.lang.Integer"></result> 
+		<result property="reportType" column="report_type" javaType="java.lang.Integer"></result> 
+		<result property="exaState" column="exa_state" javaType="java.lang.Integer"></result> 
+	</resultMap> 
+
+	<!-- 在各种标签中，id属性必须与接口中的方法名一样，id的值必须是唯一的，parameterType指查询时使用的参数类型， 
+	resultType属性指明查询返回的结果集类型    --> 
+ 
+	<sql id="Base_Column_List" > 
+		cr_id,user_id,com_id,report_type,exa_state 
+	</sql> 
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from comment_report 
+		where cr_id = #{crId} 
+	</select> 
+	<delete id="delete" parameterType="java.lang.Integer" > 
+		delete from comment_report 
+		where cr_id = #{crId} 
+	</delete> 
+	<insert id="insert" parameterType="com.qhit.commentReport.pojo.CommentReport" > 
+		insert into comment_report(user_id,com_id,report_type,exa_state) 
+		values (#{userId},#{comId},#{reportType},#{exaState}) 
+	</insert> 
+	<update id="updateSelective" parameterType="com.qhit.commentReport.pojo.CommentReport" > 
+		update comment_report 
+		<set > 
+			<if test="userId != null and userId!='' " > 
+				user_id = #{userId}, 
+			</if> 
+			<if test="comId != null and comId!='' " > 
+				com_id = #{comId}, 
+			</if> 
+			<if test="reportType != null and reportType!='' " > 
+				report_type = #{reportType}, 
+			</if> 
+			<if test="exaState != null and exaState!='' " > 
+				exa_state = #{exaState}, 
+			</if> 
+		</set> 
+		where cr_id = #{crId} 
+	</update> 
+	<update id="update" parameterType="com.qhit.commentReport.pojo.CommentReport" > 
+		update comment_report 
+		set  user_id = #{userId}, com_id = #{comId}, report_type = #{reportType}, exa_state = #{exaState} 
+		where cr_id = #{crId} 
+	</update> 
+	<select id="findAll" resultMap="BaseResultMap" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from comment_report 
+	</select> 
+	<select id="findByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from comment_report 
+		where user_id = #{userId} 
+	</select> 
+	<select id="findByComId" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from comment_report 
+		where com_id = #{comId} 
+	</select> 
+	<select id="findByReportType" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from comment_report 
+		where report_type = #{reportType} 
+	</select> 
+	<select id="findByExaState" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from comment_report 
+		where exa_state = #{exaState} 
+	</select> 
+	<delete id="deleteBatch" parameterType="java.util.Arrays"> 
+		delete from comment_report where cr_id in 
+		<foreach collection="array" item="id" open="(" close=")" separator=","> 
+			#{id} 
+		</foreach> 
+	</delete> 
+	<select id="search" parameterType="com.qhit.commentReport.pojo.CommentReport" resultMap="BaseResultMap"> 
+		select * from  comment_report 
+		<where > 
+			<if test="userId != null and userId!='' " > 
+				 and user_id = #{userId} 
+			</if> 
+			<if test="comId != null and comId!='' " > 
+				 and com_id = #{comId} 
+			</if> 
+			<if test="reportType != null and reportType!='' " > 
+				 and report_type = #{reportType} 
+			</if> 
+			<if test="exaState != null and exaState!='' " > 
+				 and exa_state = #{exaState} 
+			</if> 
+		</where> 
+	</select> 
+</mapper> 
